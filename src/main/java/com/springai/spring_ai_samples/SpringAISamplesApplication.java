@@ -1,4 +1,4 @@
-package com.springai.spring_llm_rag;
+package com.springai.spring_ai_samples;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.openai.OpenAiChatModel;
@@ -7,10 +7,10 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 
 @SpringBootApplication
-public class SpringLlmRagApplication {
+public class SpringAISamplesApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(SpringLlmRagApplication.class, args);
+		SpringApplication.run(SpringAISamplesApplication.class, args);
 	}
 
 	@Bean

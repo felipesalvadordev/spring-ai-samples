@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.acme</groupId>
-	<artifactId>spring-llm-rag</artifactId>
+	<artifactId>spring-ai-samples</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>spring-llm-rag</name>
 	<description>Demo project for Spring Boot</description>

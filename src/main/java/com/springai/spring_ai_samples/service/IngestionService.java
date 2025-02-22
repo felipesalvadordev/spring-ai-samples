@@ -1,4 +1,4 @@
-package com.springai.spring_llm_rag.service;
+package com.springai.spring_ai_samples.service;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

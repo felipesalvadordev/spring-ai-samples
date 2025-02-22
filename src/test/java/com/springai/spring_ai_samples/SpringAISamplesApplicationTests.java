@@ -1,10 +1,10 @@
-package com.springai.spring_llm_rag;
+package com.springai.spring_ai_samples;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class SpringLlmRagApplicationTests {
+class SpringAISamplesApplicationTests {
 
 	@Test
 	void contextLoads() {

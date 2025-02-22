@@ -1,4 +1,4 @@
-package com.springai.spring_llm_rag.controller;
+package com.springai.spring_ai_samples.controller;
 
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
