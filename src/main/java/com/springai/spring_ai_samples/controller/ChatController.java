@@ -1,5 +1,6 @@
 package com.springai.spring_ai_samples.controller;
 
+import com.springai.spring_ai_samples.domain.BookRecommendation;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor;
@@ -13,15 +14,19 @@ import org.springframework.web.bind.annotation.RestController;
 public class ChatController {
     private final ChatClient chatClientQuestionAdvisor;
     private final ChatClient chatClientMessageChatMemoryAdvisor;
+    private final ChatClient chatClientBookRecomendation;
 
-    public ChatController(ChatClient.Builder builder, VectorStore vectorStore, ChatClient chatClientMessageChatMemoryAdvisor) {
+    public ChatController(ChatClient.Builder builder, VectorStore vectorStore) {
 
         this.chatClientMessageChatMemoryAdvisor = builder
                 .defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()))
                 .build();
+
         this.chatClientQuestionAdvisor = builder
                 .defaultAdvisors(new QuestionAnswerAdvisor(vectorStore))
                 .build();
+
+        this.chatClientBookRecomendation = builder.build();;
     }
 
     @GetMapping("/advisor")
@@ -39,5 +44,13 @@ public class ChatController {
                 .user(message)
                 .call()
                 .content();
+    }
+
+    @GetMapping("/book-recomendations")
+    public BookRecommendation chatWithEntityReturn() {
+        return chatClientBookRecomendation.prompt()
+                .user("Generate a book recommendation for a book on AI and coding. Please limit the summary to 100 words.")
+                .call()
+                .entity(BookRecommendation.class);
     }
 }
