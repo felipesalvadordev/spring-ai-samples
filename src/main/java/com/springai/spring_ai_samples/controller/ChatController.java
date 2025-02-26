@@ -1,12 +1,18 @@
 package com.springai.spring_ai_samples.controller;
 
-import com.springai.spring_ai_samples.domain.BookRecommendation;
+import com.springai.spring_ai_samples.records.BookRecommendation;
+import com.springai.spring_ai_samples.records.ChatRequest;
+import com.springai.spring_ai_samples.records.ChatResponse;
+import com.springai.spring_ai_samples.service.ChatInMemoryService;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor;
 import org.springframework.ai.chat.memory.InMemoryChatMemory;
 import org.springframework.ai.vectorstore.VectorStore;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -16,11 +22,14 @@ public class ChatController {
     private final ChatClient chatClientMessageChatMemoryAdvisor;
     private final ChatClient chatClientBookRecomendation;
 
-    public ChatController(ChatClient.Builder builder, VectorStore vectorStore) {
+    private final ChatInMemoryService chatInMemoryService;
+
+    public ChatController(ChatClient.Builder builder, VectorStore vectorStore, ChatInMemoryService chatInMemoryService) {
 
         this.chatClientMessageChatMemoryAdvisor = builder
                 .defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()))
                 .build();
+        this.chatInMemoryService = chatInMemoryService;
 
         this.chatClientQuestionAdvisor = builder
                 .defaultAdvisors(new QuestionAnswerAdvisor(vectorStore))
@@ -38,12 +47,10 @@ public class ChatController {
                 .content();
     }
 
-    @GetMapping("/chat-memory")
-    public String chatMemory(@RequestParam String message) {
-        return chatClientMessageChatMemoryAdvisor.prompt()
-                .user(message)
-                .call()
-                .content();
+    @PostMapping("/chatbot")
+    public ResponseEntity<ChatResponse> chat(@RequestBody ChatRequest chatRequest) {
+        ChatResponse chatResponse = chatInMemoryService.chat(chatRequest);
+        return ResponseEntity.ok(chatResponse);
     }
 
     @GetMapping("/book-recomendations")

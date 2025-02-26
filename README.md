@@ -21,9 +21,9 @@ curl http://localhost:8080/advisor
 The response will include context from your documents along with the LLM's analysis.
 
 ```bash
-curl http://localhost:8080/chat-memory?message="What's my name?"
+curl http://localhost:8080/chatbot?question="Wha was the first car with line production?"
 ```
-The response will be a chatbot with memory capabilities.
+The response will be a chatbot with memory capabilities. A chatID also can be sent as a parameter to remain in the same conversation context.
 
 ```bash
 curl http://localhost:8080/book-recomendations
@@ -40,4 +40,5 @@ This code demonstrates how to automatically parse the AI's response into a struc
 ## References
 https://www.danvega.dev/blog/getting-started-with-spring-ai-rag  
 https://www.danvega.dev/blog/spring-ai-chat-memory  
-https://www.danvega.dev/blog/ai-java-developers
+https://www.danvega.dev/blog/ai-java-developers  
+https://www.baeldung.com/spring-ai-anthropics-claude-models

@@ -1,4 +1,4 @@
-package com.springai.spring_ai_samples.domain;
+package com.springai.spring_ai_samples.records;
 
 public record BookRecommendation(
         String title,
