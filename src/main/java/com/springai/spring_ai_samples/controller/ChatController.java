@@ -19,16 +19,17 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class ChatController {
     private final ChatClient chatClientQuestionAdvisor;
-    private final ChatClient chatClientMessageChatMemoryAdvisor;
+    private final ChatClient chatClientMessageChatMemory;
     private final ChatClient chatClientBookRecomendation;
 
     private final ChatInMemoryService chatInMemoryService;
 
     public ChatController(ChatClient.Builder builder, VectorStore vectorStore, ChatInMemoryService chatInMemoryService) {
 
-        this.chatClientMessageChatMemoryAdvisor = builder
+        this.chatClientMessageChatMemory = builder
                 .defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()))
                 .build();
+
         this.chatInMemoryService = chatInMemoryService;
 
         this.chatClientQuestionAdvisor = builder
@@ -38,11 +39,19 @@ public class ChatController {
         this.chatClientBookRecomendation = builder.build();;
     }
 
-    @GetMapping("/advisor")
+    @GetMapping("/advisor-using-vector-store")
     public String chatAdvisor(@RequestParam(defaultValue = "How did the Federal Reserve's recent interest " +
             "rate cut impact various asset classes according to the analysis") String query) {
         return chatClientQuestionAdvisor.prompt()
                 .user(query)
+                .call()
+                .content();
+    }
+
+    @GetMapping("/chat-with-memory")
+    public String chatMemory(@RequestParam String message) {
+        return chatClientMessageChatMemory.prompt()
+                .user(message)
                 .call()
                 .content();
     }

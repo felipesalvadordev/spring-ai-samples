@@ -16,14 +16,19 @@ This project demonstrates how to:
 Query the API using curl or your preferred HTTP client:
 
 ```bash
-curl http://localhost:8080/advisor
+curl http://localhost:8080/advisor-using-vector-store
 ```
 The response will include context from your documents along with the LLM's analysis.
 
 ```bash
-curl http://localhost:8080/chatbot?question="Wha was the first car with line production?"
+curl http://localhost:8080/chatbot?question="What was the first car with line production?"
 ```
 The response will be a chatbot with memory capabilities. A chatID also can be sent as a parameter to remain in the same conversation context.
+
+```bash
+curl http://localhost:8080/advisor-with-memory?message="Whats my name?"
+```
+The chatbot remembers the user's name from the first interaction and can recall it in the second interaction
 
 ```bash
 curl http://localhost:8080/book-recomendations
