@@ -10,8 +10,10 @@ import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor;
 import org.springframework.ai.chat.memory.InMemoryChatMemory;
 import org.springframework.ai.chat.prompt.PromptTemplate;
+import org.springframework.ai.model.Media;
 import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.ai.vectorstore.VectorStore;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -32,6 +34,7 @@ public class ChatController {
         this.chatClientMessageChatMemory = builder
                 .defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()))
                 .build();
+
         this.openAiChatClient = openAiChatClient;
 
         this.chatInMemoryService = chatInMemoryService;
@@ -40,7 +43,7 @@ public class ChatController {
                 .defaultAdvisors(new QuestionAnswerAdvisor(vectorStore))
                 .build();
 
-        this.chatClientBookRecomendation = builder.build();;
+        this.chatClientBookRecomendation = builder.build();
     }
 
     @GetMapping("/advisor-using-vector-store")
@@ -82,5 +85,15 @@ public class ChatController {
                 and also the biography of its author.""");
         promptTemplate.add("book", book);
         return openAiChatClient.call(promptTemplate.create()).getResult().getOutput().getText();
+    }
+
+    @GetMapping("/image-explained")
+    public String imageExplained() {
+        return ChatClient.create(openAiChatClient)
+                .prompt()
+                .user(u -> u.text("Explain what do you see on this picture?")
+                        .media(Media.Format.IMAGE_JPEG, new ClassPathResource("/images/my-dog.jpg")))
+                .call()
+                .content();
     }
 }
