@@ -9,6 +9,8 @@ import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor;
 import org.springframework.ai.chat.memory.InMemoryChatMemory;
+import org.springframework.ai.chat.prompt.PromptTemplate;
+import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,14 +23,16 @@ public class ChatController {
     private final ChatClient chatClientQuestionAdvisor;
     private final ChatClient chatClientMessageChatMemory;
     private final ChatClient chatClientBookRecomendation;
+    private final OpenAiChatModel openAiChatClient;
 
     private final ChatInMemoryService chatInMemoryService;
 
-    public ChatController(ChatClient.Builder builder, VectorStore vectorStore, ChatInMemoryService chatInMemoryService) {
+    public ChatController(ChatClient.Builder builder, VectorStore vectorStore, OpenAiChatModel openAiChatClient, ChatInMemoryService chatInMemoryService) {
 
         this.chatClientMessageChatMemory = builder
                 .defaultAdvisors(new MessageChatMemoryAdvisor(new InMemoryChatMemory()))
                 .build();
+        this.openAiChatClient = openAiChatClient;
 
         this.chatInMemoryService = chatInMemoryService;
 
@@ -68,5 +72,15 @@ public class ChatController {
                 .user("Generate a book recommendation for a book on AI and coding. Please limit the summary to 100 words.")
                 .call()
                 .entity(BookRecommendation.class);
+    }
+
+    @GetMapping("/reviews")
+    public String bookReview(@RequestParam(value = "book", defaultValue = "The Shinning") String book) {
+        PromptTemplate promptTemplate = new PromptTemplate("""
+                Please provide me with
+                a brief review of the book {book}
+                and also the biography of its author.""");
+        promptTemplate.add("book", book);
+        return openAiChatClient.call(promptTemplate.create()).getResult().getOutput().getText();
     }
 }
