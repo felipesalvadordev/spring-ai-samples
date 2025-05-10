@@ -35,6 +35,10 @@ curl http://localhost:8080/book-recomendations
 ```
 This code demonstrates how to automatically parse the AI's response into a structured Java object whitout JSON mapping. 
 
+```bash
+curl http://localhost:8080/image-explained
+```
+Analyze images, answer questions about them, classify them, and generate summaries based on provided instructions.
 ## Architecture Anatomy of RAG and LLM process
 
 - **Document Processing**: Uses Spring AI's PDF document reader to parse documents into manageable chunks
