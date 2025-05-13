@@ -11,7 +11,8 @@ This project demonstrates how to:
 - Augment LLM responses with relevant document context
 - Create an API endpoint for document-aware chat interactions
 - Build a ChatClient with a MessageChatMemoryAdvisor that uses InMemoryChatMemory. This setup allows our chatbot to remember previous interactions.  
-- Build a book recommendation system using Spring AI and Spring Boot and parse the AI's response into a structured Java object.
+- Build a book recommendation system using Spring AI and Spring Boot and parse the AI's response into a structured Java object.  
+- Build an image analyser with OpenAiChatModel
 
 Query the API using curl or your preferred HTTP client:
 
@@ -50,4 +51,5 @@ Analyze images, answer questions about them, classify them, and generate summari
 https://www.danvega.dev/blog/getting-started-with-spring-ai-rag  
 https://www.danvega.dev/blog/spring-ai-chat-memory  
 https://www.danvega.dev/blog/ai-java-developers  
-https://www.baeldung.com/spring-ai-anthropics-claude-models
+https://www.baeldung.com/spring-ai-anthropics-claude-models  
+https://docs.spring.io/spring-ai/reference/api/chat/openai-chat.html
